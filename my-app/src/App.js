@@ -1,6 +1,7 @@
 // import logo from './logo.svg';
 import './App.css';
 import Navbar from './Components/Navbar';
+import TextForm from './Components/TextForm';
 
 function App() {
   return (
@@ -43,6 +44,8 @@ function App() {
 
     <>
     <Navbar title="TEJAS" about="About"/>
+    <br></br>
+    <TextForm heading="Enter Text To Analyze"/>
     </>
     
   );
