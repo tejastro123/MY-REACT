@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        let a = 34;
+        console.log(a);
+
+        function hello(){
+            console.log("Hello");
+        }
+
+        let obj = {
+            a:5,
+            b:2,
+            func: function mynumber(number){
+                console.log(number);
+            }
+        }
+
+        document.addEventListener("click", function click(){
+            console.log("You clicked the page");
+            // alert("CLICKED!");
+            let conf = confirm("Are you sure?");
+            console.log(conf);
+        });
+
+        let arr = [1,5,10,15];
+        //print elements of array
+        for(let i = 0; i < arr.length; i++){
+            console.log(arr[i]);
+        }
+
+        let mobj = {
+            a:this,
+            myfunc : (number)=> {
+                console.log(this);
+            }
+        }
+        mobj.myfunc();
+        console.log(mobj.a)
+
+        setTimeout(() => {
+            console.log("good morning")
+        }, 5000);
+        console.log("hi,")
+
+    </script>
+</head>
+<body>
+    <h1>
+        I am Mellimpudi Tejas
+    </h1>
+</body>
+</html>
