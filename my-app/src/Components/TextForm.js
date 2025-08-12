@@ -91,18 +91,26 @@ export default function TextForm({ heading, mode }) {
   // Word count
   const wordCount = text.trim() ? text.trim().split(/\s+/).length : 0;
 
+  // Dynamic styles based on mode
+  const darkBg = { backgroundColor: "#121212", color: "#fff" };
+  const lightBg = { backgroundColor: "#ffffff", color: "#000" };
+  const sectionStyle = mode === "dark" ? darkBg : lightBg;
+  const inputStyle = {
+    backgroundColor: mode === "dark" ? "#1e1e1e" : "#fff",
+    color: mode === "dark" ? "#fff" : "#000",
+    border: mode === "dark" ? "1px solid #555" : "1px solid #ccc",
+  };
+
   return (
-    <div
-      className="container my-5"
-      style={{ color: mode === "dark" ? "white" : "black" }}
-    >
+    <div className="container my-5">
       {/* LOGIN FORM */}
       {!isLoggedIn && (
         <div className="row justify-content-center">
           <div className="col-md-6">
             <form
               onSubmit={handleLogin}
-              className="p-4 border rounded bg-light shadow-sm"
+              className="p-4 border rounded shadow-sm"
+              style={sectionStyle}
             >
               <h3 className="mb-4 text-center">🔐 Login to Continue</h3>
 
@@ -114,6 +122,7 @@ export default function TextForm({ heading, mode }) {
                   type="email"
                   id="email"
                   className="form-control"
+                  style={inputStyle}
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
@@ -129,6 +138,7 @@ export default function TextForm({ heading, mode }) {
                     type={showPassword ? "text" : "password"}
                     id="password"
                     className="form-control"
+                    style={inputStyle}
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
@@ -136,6 +146,11 @@ export default function TextForm({ heading, mode }) {
                   <button
                     type="button"
                     className="btn btn-outline-secondary"
+                    style={{
+                      backgroundColor:
+                        mode === "dark" ? "#333" : "#f8f9fa",
+                      color: mode === "dark" ? "#fff" : "#000",
+                    }}
                     onClick={() => setShowPassword(!showPassword)}
                   >
                     {showPassword ? "🙈" : "👁"}
@@ -153,13 +168,7 @@ export default function TextForm({ heading, mode }) {
 
       {/* TEXT TOOLS */}
       {isLoggedIn && (
-        <div
-          className="p-4 border rounded bg-white shadow-sm"
-          style={{
-            backgroundColor: mode === "dark" ? "#333" : "white",
-            color: mode === "dark" ? "white" : "black",
-          }}
-        >
+        <div className="p-4 border rounded shadow-sm" style={sectionStyle}>
           <div className="d-flex justify-content-between align-items-center mb-3">
             <h2 className="mb-0">{heading}</h2>
             <button className="btn btn-outline-danger" onClick={handleLogout}>
@@ -174,57 +183,30 @@ export default function TextForm({ heading, mode }) {
             value={text}
             onChange={handleChange}
             placeholder="✍️ Type or paste your text here..."
-            style={{
-              backgroundColor: mode === "dark" ? "#555" : "white",
-              color: mode === "dark" ? "white" : "black",
-            }}
+            style={inputStyle}
           ></textarea>
 
           {/* ACTION BUTTONS */}
           <div className="mb-3 d-flex flex-wrap gap-2">
-            <button
-              className="btn btn-primary"
-              onClick={handleUppercase}
-              disabled={!text}
-            >
+            <button className="btn btn-primary" onClick={handleUppercase} disabled={!text}>
               UPPERCASE
             </button>
-            <button
-              className="btn btn-primary"
-              onClick={handleLowercase}
-              disabled={!text}
-            >
+            <button className="btn btn-primary" onClick={handleLowercase} disabled={!text}>
               lowercase
             </button>
-            <button
-              className="btn btn-primary"
-              onClick={handleCapitalize}
-              disabled={!text}
-            >
+            <button className="btn btn-primary" onClick={handleCapitalize} disabled={!text}>
               Capitalize Words
             </button>
-            <button
-              className="btn btn-primary"
-              onClick={handleRemoveSpaces}
-              disabled={!text}
-            >
+            <button className="btn btn-primary" onClick={handleRemoveSpaces} disabled={!text}>
               Remove Extra Spaces
             </button>
-            <button
-              className="btn btn-primary"
-              onClick={handleReverse}
-              disabled={!text}
-            >
+            <button className="btn btn-primary" onClick={handleReverse} disabled={!text}>
               Reverse Text
             </button>
             <button className="btn btn-success" onClick={handleCopy} disabled={!text}>
               Copy Text
             </button>
-            <button
-              className="btn btn-danger"
-              onClick={handleClear}
-              disabled={!text}
-            >
+            <button className="btn btn-danger" onClick={handleClear} disabled={!text}>
               Clear
             </button>
             {copyStatus && <span className="ms-2 text-success">{copyStatus}</span>}
@@ -246,7 +228,13 @@ export default function TextForm({ heading, mode }) {
           {/* PREVIEW */}
           <div>
             <h4>👀 Preview</h4>
-            <div className="p-3 border rounded bg-light">
+            <div
+              className="p-3 border rounded"
+              style={{
+                backgroundColor: mode === "dark" ? "#1e1e1e" : "#f8f9fa",
+                color: mode === "dark" ? "#fff" : "#000",
+              }}
+            >
               {text || (
                 <span className="text-muted">
                   Enter something in the textbox to preview it here.

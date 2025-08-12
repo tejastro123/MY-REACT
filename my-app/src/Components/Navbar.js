@@ -2,13 +2,13 @@ import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 
 export default function Navbar({
-  title = "my website",
-  about = "about us",
+  title = "My Website",
+  about = "About Us",
   links = [],
-  dropdownTitle = "dropdown",
-  dropdownItems = ["one","two","three"],
+  dropdownTitle = "Dropdown",
+  dropdownItems = ["one", "two", "three"],
   mode,
-  togglemode,
+  toggleMode, // ✅ fixed prop name
   onSearch
 }) {
   const [scrolled, setScrolled] = useState(false);
@@ -17,12 +17,10 @@ export default function Navbar({
   const handleSearchSubmit = (e) => {
     e.preventDefault();
     const trimmed = searchTerm.trim();
-
     if (!trimmed) {
       alert("Please enter a search term!");
       return;
     }
-
     if (onSearch && typeof onSearch === "function") {
       onSearch(trimmed);
     } else {
@@ -38,11 +36,11 @@ export default function Navbar({
 
   return (
     <nav
-      className={`navbar navbar-expand-lg navbar-${mode} bg-primary transition-all ${
-        scrolled ? "shadow-sm" : ""
-      }`}
+      className={`navbar navbar-expand-lg navbar-${mode} bg-${
+        mode === "light" ? "blue" : "dark"
+      } ${scrolled ? "shadow-sm" : ""} transition-all`}
     >
-      <div className="container">
+      <div className="container" style={{ backgroundColor: mode === "dark" ? "#343a40" : "#f8f9fa", color: mode ==="dark" ? "#f8f9fa" : "343a40"}}>
         {/* Brand */}
         <a className="navbar-brand fw-bold" href="/">
           {title}
@@ -67,9 +65,7 @@ export default function Navbar({
             {links.map((link, index) => (
               <li key={index} className="nav-item">
                 <a
-                  className={`nav-link ${
-                    link.active ? "active fw-semibold" : ""
-                  }`}
+                  className={`nav-link ${link.active ? "active fw-semibold" : ""}`}
                   href={link.href}
                 >
                   {link.label}
@@ -115,10 +111,11 @@ export default function Navbar({
           </ul>
 
           {/* Search */}
-          <form className="d-flex" role="search" onSubmit={handleSearchSubmit}>
+          <form className="d-flex" role="search" onSubmit={handleSearchSubmit} style={{ backgroundColor: mode === "dark" ? "#343a40" : "white", 
+            color: mode ==="dark" ? "white" : "#343a40"}}>
             <input
               name="search"
-              className="form-control me-1"
+              className="form-control"
               aria-label="Search"
               type="search"
               placeholder="Search..."
@@ -126,30 +123,27 @@ export default function Navbar({
               onChange={(e) => setSearchTerm(e.target.value)}
               autoComplete="off"
             />
-            <button className="btn btn-outline-dark" type="submit">
+            <button className={`btn btn-${mode === "light" ? "dark" : "light"}`} type="submit">
               Search
             </button>
           </form>
 
           {/* Dark Mode Toggle */}
-          <div
-            className={`form-check form-switch ms-3 text-${
-              mode === "light" ? "dark" : "light"
-            }`}
-          >
+          <div className={`form-check form-switch ms-3 text-${mode === "light" ? "dark" : "light"}`}>
             <input
               className="form-check-input"
-              onClick={togglemode}
+              onChange={toggleMode} // ✅ now works
               type="checkbox"
               role="switch"
               id="darkModeSwitch"
+              checked={mode === "dark"} // ✅ keeps state in sync
             />
             <label
               className="form-check-label"
               htmlFor="darkModeSwitch"
-              style={{ cursor: "pointer" }}
+              style={{ cursor: "pointer", color: mode ==="dark" ? "#f8f9fa" : "343a40" }}
             >
-              Dark
+              {mode === "light" ? "Dark Mode" : "Light Mode"}
             </label>
           </div>
         </div>
@@ -179,15 +173,6 @@ Navbar.propTypes = {
     ])
   ),
   mode: PropTypes.oneOf(["light", "dark"]),
-  togglemode: PropTypes.func.isRequired,
+  toggleMode: PropTypes.func.isRequired,
   onSearch: PropTypes.func
-};
-
-Navbar.defaultProps = {
-  title: "My App",
-  about: "About Us",
-  links: [],
-  dropdownTitle: "Dropdown",
-  dropdownItems: [],
-  mode: "light"
 };

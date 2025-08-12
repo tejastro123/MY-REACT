@@ -3,18 +3,17 @@ import React, { useState, useEffect, useCallback } from "react";
 import "./App.css";
 import Navbar from "./Components/Navbar";
 import TextForm from "./Components/TextForm";
-// import About from "./Components/About";
 
- // Theme colors
-  const THEME_COLORS = {
-    light: "#f8f9fa",
-    dark: "#042743",
-  };
-  
+// ✅ Move THEME_COLORS outside so it's stable
+const THEME_COLORS = {
+  light: "#f8f9fa",
+  dark: "#042743",
+};
+
 function App() {
-  // Theme state (dark or light)
+  // Theme state with persistence
   const [mode, setMode] = useState(() => localStorage.getItem("theme") || "light");
-  
+
   // Login state
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
@@ -23,16 +22,17 @@ function App() {
     setMode((prevMode) => (prevMode === "light" ? "dark" : "light"));
   }, []);
 
-  // Update background and persist theme
+  // Apply theme changes & persist
   useEffect(() => {
     document.body.style.backgroundColor = THEME_COLORS[mode];
+    document.body.style.color = mode === "dark" ? "#ffffff" : "#000000"; // text color
     localStorage.setItem("theme", mode);
   }, [mode]);
 
   return (
     <>
       <Navbar
-        title = "MY APP"
+        title="MY APP"
         isLoggedIn={isLoggedIn}
         onLogin={() => setIsLoggedIn(true)}
         onLogout={() => setIsLoggedIn(false)}
@@ -41,16 +41,20 @@ function App() {
         links={[
           { label: "Home", href: "/" },
           { label: "About", href: "/about" },
-          { label: "Contact", href: "/contact" }
-  ]}
+          { label: "Contact", href: "/contact" },
+        ]}
       />
 
       <main className="container py-4">
         <TextForm heading="Enter Text To Analyze" mode={mode} />
       </main>
     </>
+  );
+}
 
-    // 1.<>
+export default App;
+
+// 1.<>
     // <div className="App">
     //   <header className="App-header">
     //     <h1>HI! IAM TEJAS</h1>
@@ -86,7 +90,3 @@ function App() {
     //   </p>
     // </div>
     // </> 
-  );
-}
-
-export default App;
