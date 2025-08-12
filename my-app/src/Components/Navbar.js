@@ -38,9 +38,10 @@ export default function Navbar({
     <nav
       className={`navbar navbar-expand-lg navbar-${mode} bg-${
         mode === "light" ? "blue" : "dark"
-      } ${scrolled ? "shadow-sm" : ""} transition-all`}
+      } ${scrolled ? "shadow-sm" : ""} transition-all`} 
+      style={{ backgroundColor: mode === "dark" ? "black" : "white", color: mode ==="dark" ? "white" : "black"}}
     >
-      <div className="container" style={{ backgroundColor: mode === "dark" ? "black" : "white", color: mode ==="dark" ? "white" : "black"}}>
+      <div className="container" style={{ backgroundColor: mode === "dark" ? "black" : "white", color: mode ==="dark" ? "white" : "black", borderRadius: 10, height: 75}}>
         {/* Brand */}
         <a className="navbar-brand fw-bold" href="/">
           {title}
@@ -112,35 +113,36 @@ export default function Navbar({
           </div>
 
           {/* Search */} 
-          <form
-          className="d-flex"
-  role="search"
-  onSubmit={handleSearchSubmit}
-  style={{
-    backgroundColor: mode === "dark" ? "black" : "white",
-    color: mode === "dark" ? "white" : "black",
-    maxWidth: "300px"
-  }}
->
-    <input
-      name="search"
-      className="form-control"
-      aria-label="Search"
-      type="search"
-      placeholder="Search..."
-      value={searchTerm}
-      onChange={(e) => setSearchTerm(e.target.value)}
-      autoComplete="on"
-    />
-    <button
-      className={`btn btn-${mode === "light" ? "dark" : "light"}`}
-      type="submit"
-    > Search
-    </button>
-</form>
-
-          
-
+        <form
+          style={{
+              backgroundColor: mode === "dark" ? "black" : "white",
+              color: mode === "dark" ? "white" : "black",
+              maxWidth: "350px"
+              }}
+          className="flex"
+          role="search"
+          onSubmit={handleSearchSubmit}
+          >
+          <input 
+          name="search"
+          className="form-control me-2"
+          aria-label="Search"
+          type="search"
+          placeholder="Search..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          autoComplete="on"
+          />
+          <button
+            className={`btn btn-${mode === "light" ? "light" : "dark"} button`}
+            type="submit"
+            style={{
+              backgroundColor: mode === "dark" ? "black" : "white",
+              color: mode === "dark" ? "white" : "black",
+              }}
+            > Search
+          </button>
+       </form>
           {/* Dark Mode Toggle */}
           <div className={`form-check form-switch ms-3 text-${mode === "light" ? "dark" : "light"}`}>
             <input
