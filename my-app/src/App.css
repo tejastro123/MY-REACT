@@ -10,6 +10,7 @@ body {
 
 * {
   transition: all 0.25s ease;
+  box-sizing: border-box;
 }
 
 /* ========================
@@ -47,13 +48,11 @@ form:hover {
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
 }
 
-/* Labels */
 .form-label {
   font-weight: 600;
   color: #4a4a4a;
 }
 
-/* Inputs & Textarea */
 .form-control {
   border-radius: 10px;
   border: 1px solid #ddd;
@@ -66,7 +65,6 @@ form:hover {
   box-shadow: 0 0 0 0.15rem rgba(255, 75, 92, 0.25);
 }
 
-/* Checkboxes */
 .form-check-input {
   cursor: pointer;
 }
@@ -76,7 +74,6 @@ form:hover {
   color: #555;
 }
 
-/* Buttons */
 .btn-primary {
   background: linear-gradient(135deg, #ff4b5c, #ff7b72);
   border: none;
@@ -92,9 +89,6 @@ form:hover {
   box-shadow: 0 6px 15px rgba(255, 75, 92, 0.3);
 }
 
-/* ========================
-   Headings & Textarea
-======================== */
 h1 {
   margin-top: 30px;
   font-weight: 700;
@@ -108,7 +102,6 @@ textarea {
   resize: none;
 }
 
-/* Helper text */
 .form-text {
   font-size: 0.85rem;
   color: #6c757d;
@@ -121,6 +114,7 @@ textarea {
   background: white !important;
   box-shadow: 0 4px 25px rgba(0, 0, 0, 0.05);
   border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  z-index: 1000;
 }
 
 .navbar-brand {
@@ -144,17 +138,34 @@ textarea {
   color: #ff4b5c !important;
 }
 
-/* Active link */
 .nav-link.active {
   background: linear-gradient(135deg, #ff4b5c, #ff7b72);
   color: white !important;
 }
 
-/* Dropdown */
+/* ========================
+   Dropdown (Fix + Styling)
+======================== */
 .dropdown-menu {
   border-radius: 12px;
   box-shadow: 0 10px 30px rgba(0,0,0,0.08);
   border: none;
+  margin-top: 8px;
+  display: none; /* Hide by default */
+  position: absolute;
+  background-color: white;
+  min-width: 180px;
+  z-index: 1050;
+}
+
+.dropdown-menu.show {
+  display: block; /* Show when Bootstrap adds .show */
+  animation: fadeIn 0.2s ease;
+}
+
+.dropdown-item {
+  padding: 10px 16px;
+  font-weight: 500;
 }
 
 .dropdown-item:hover {
@@ -162,13 +173,14 @@ textarea {
   color: #ff4b5c;
 }
 
-/* Search bar */
+/* ========================
+   Search Bar
+======================== */
 .form-control:focus {
   border-color: #ff4b5c;
   box-shadow: 0 0 0 0.15rem rgba(255, 75, 92, 0.25);
 }
 
-/* Search button */
 .btn-outline-success {
   color: #ff4b5c;
   border-color: #ff4b5c;
@@ -177,4 +189,16 @@ textarea {
 .btn-outline-success:hover {
   background-color: #ff4b5c;
   color: white;
+}
+
+.transition-all {
+  transition: all 0.3s ease;
+}
+
+/* ========================
+   Animations
+======================== */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
 }

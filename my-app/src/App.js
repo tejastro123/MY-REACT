@@ -1,9 +1,11 @@
 // import logo from './logo.svg';
+import React, { useState } from "react";
 import './App.css';
 import Navbar from './Components/Navbar';
 import TextForm from './Components/TextForm';
 
 function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   return (
     // 1.<>
     // <div className="App">
@@ -43,7 +45,12 @@ function App() {
     // </>
 
     <>
-    <Navbar title="TEJAS" about="About"/>
+    <Navbar 
+        title="My App"
+        about="About Us"
+        isLoggedIn={isLoggedIn}
+        onLogin={() => setIsLoggedIn(true)}
+        onLogout={() => setIsLoggedIn(false)}/>
     <br></br>
     <TextForm heading="Enter Text To Analyze"/>
     </>
