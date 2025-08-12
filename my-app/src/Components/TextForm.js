@@ -47,6 +47,13 @@ export default function TextForm({ heading }) {
   const handleClear = () => setText("");
   const handleChange = (e) => setText(e.target.value);
 
+  const handleCopy = () => {
+    console.log("I am Copy");
+    var text = document.getElementById("myBox");
+    text.select();
+    navigator.clipboard.writeText(text.value);
+  }
+
   // Word count
   const wordCount = text.trim() ? text.trim().split(/\s+/).length : 0;
 
@@ -113,6 +120,7 @@ export default function TextForm({ heading }) {
 
           <textarea
             className="form-control mb-3"
+            id="myBox"
             rows="6"
             value={text}
             onChange={handleChange}
@@ -141,6 +149,12 @@ export default function TextForm({ heading }) {
               disabled={!text}
             >
               Capitalize Words
+            </button>
+            <button
+              className="btn btn-primary"
+              onClick={handleCopy}
+            >
+              Copy Text
             </button>
             <button
               className="btn btn-danger"

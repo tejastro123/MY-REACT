@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import './App.css';
 import Navbar from './Components/Navbar';
 import TextForm from './Components/TextForm';
+// import About from "./Components/About";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -53,6 +54,8 @@ function App() {
         onLogout={() => setIsLoggedIn(false)}/>
     <br></br>
     <TextForm heading="Enter Text To Analyze"/>
+    <br></br>
+    {/* <About/> */}
     </>
     
   );

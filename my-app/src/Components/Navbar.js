@@ -6,7 +6,7 @@ export default function Navbar({
   about = "About Page",
   links = [],
   dropdownTitle = "Dropdown",
-  dropdownItems = [1,2,3]
+  dropdownItems = ["one","two","three"]
 }) {
   const [scrolled, setScrolled] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
