@@ -1,35 +1,49 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
-export default function TextForm({ heading }) {
+export default function TextForm({ heading, mode }) {
   const [text, setText] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [copyStatus, setCopyStatus] = useState("");
 
   // Demo credentials
   const validEmail = "tejas.mellimpudi@gmail.com";
   const validPassword = "1234";
 
-  // Handle Login
+  // Auto-login if session exists
+  useEffect(() => {
+    const session = localStorage.getItem("isLoggedIn");
+    if (session === "true") {
+      setIsLoggedIn(true);
+    }
+  }, []);
+
+  // Login handler
   const handleLogin = (e) => {
     e.preventDefault();
-    if (email === validEmail && password === validPassword) {
+    if (
+      email.trim().toLowerCase() === validEmail &&
+      password === validPassword
+    ) {
       setIsLoggedIn(true);
+      localStorage.setItem("isLoggedIn", "true");
       setError("");
     } else {
       setError("❌ Invalid email or password");
     }
   };
 
-  // Logout
-  
+  // Logout handler
   const handleLogout = () => {
     setIsLoggedIn(false);
     setText("");
     setEmail("");
     setPassword("");
     setError("");
+    localStorage.removeItem("isLoggedIn");
   };
 
   // Text actions
@@ -45,21 +59,44 @@ export default function TextForm({ heading }) {
         .join(" ")
     );
   const handleClear = () => setText("");
+  const handleRemoveSpaces = () => setText(text.replace(/\s+/g, " ").trim());
+  const handleReverse = () => setText(text.split("").reverse().join(""));
+
   const handleChange = (e) => setText(e.target.value);
 
   const handleCopy = () => {
-    console.log("I am Copy");
-    var text = document.getElementById("myBox");
-    text.select();
-    navigator.clipboard.writeText(text.value);
-  }
+    navigator.clipboard.writeText(text);
+    setCopyStatus("✅ Copied!");
+    setTimeout(() => setCopyStatus(""), 1500);
+  };
+
+  // Keyboard shortcuts
+  useEffect(() => {
+    const handleKey = (e) => {
+      if (e.ctrlKey) {
+        if (e.key === "u") {
+          e.preventDefault();
+          handleUppercase();
+        }
+        if (e.key === "l") {
+          e.preventDefault();
+          handleLowercase();
+        }
+      }
+    };
+    window.addEventListener("keydown", handleKey);
+    return () => window.removeEventListener("keydown", handleKey);
+  });
 
   // Word count
   const wordCount = text.trim() ? text.trim().split(/\s+/).length : 0;
 
   return (
-    <div className="container my-5">
-      {/* LOGIN */}
+    <div
+      className="container my-5"
+      style={{ color: mode === "dark" ? "white" : "black" }}
+    >
+      {/* LOGIN FORM */}
       {!isLoggedIn && (
         <div className="row justify-content-center">
           <div className="col-md-6">
@@ -81,23 +118,29 @@ export default function TextForm({ heading }) {
                   onChange={(e) => setEmail(e.target.value)}
                   required
                 />
-                <div className="form-text">
-                  Use valid email like <b>test@example.com</b>
-                </div>
               </div>
 
               <div className="mb-3">
                 <label htmlFor="password" className="form-label fw-semibold">
                   Password
                 </label>
-                <input
-                  type="password"
-                  id="password"
-                  className="form-control"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                />
+                <div className="input-group">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    id="password"
+                    className="form-control"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                  />
+                  <button
+                    type="button"
+                    className="btn btn-outline-secondary"
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    {showPassword ? "🙈" : "👁"}
+                  </button>
+                </div>
               </div>
 
               {error && <div className="alert alert-danger">{error}</div>}
@@ -110,7 +153,13 @@ export default function TextForm({ heading }) {
 
       {/* TEXT TOOLS */}
       {isLoggedIn && (
-        <div className="p-4 border rounded bg-white shadow-sm">
+        <div
+          className="p-4 border rounded bg-white shadow-sm"
+          style={{
+            backgroundColor: mode === "dark" ? "#333" : "white",
+            color: mode === "dark" ? "white" : "black",
+          }}
+        >
           <div className="d-flex justify-content-between align-items-center mb-3">
             <h2 className="mb-0">{heading}</h2>
             <button className="btn btn-outline-danger" onClick={handleLogout}>
@@ -125,6 +174,10 @@ export default function TextForm({ heading }) {
             value={text}
             onChange={handleChange}
             placeholder="✍️ Type or paste your text here..."
+            style={{
+              backgroundColor: mode === "dark" ? "#555" : "white",
+              color: mode === "dark" ? "white" : "black",
+            }}
           ></textarea>
 
           {/* ACTION BUTTONS */}
@@ -152,8 +205,19 @@ export default function TextForm({ heading }) {
             </button>
             <button
               className="btn btn-primary"
-              onClick={handleCopy}
+              onClick={handleRemoveSpaces}
+              disabled={!text}
             >
+              Remove Extra Spaces
+            </button>
+            <button
+              className="btn btn-primary"
+              onClick={handleReverse}
+              disabled={!text}
+            >
+              Reverse Text
+            </button>
+            <button className="btn btn-success" onClick={handleCopy} disabled={!text}>
               Copy Text
             </button>
             <button
@@ -163,6 +227,7 @@ export default function TextForm({ heading }) {
             >
               Clear
             </button>
+            {copyStatus && <span className="ms-2 text-success">{copyStatus}</span>}
           </div>
 
           {/* SUMMARY */}
@@ -182,7 +247,11 @@ export default function TextForm({ heading }) {
           <div>
             <h4>👀 Preview</h4>
             <div className="p-3 border rounded bg-light">
-              {text || <span className="text-muted">Nothing to preview</span>}
+              {text || (
+                <span className="text-muted">
+                  Enter something in the textbox to preview it here.
+                </span>
+              )}
             </div>
           </div>
         </div>

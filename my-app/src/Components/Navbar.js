@@ -2,37 +2,43 @@ import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 
 export default function Navbar({
-  title = "Default Title",
-  about = "About Page",
+  title = "my website",
+  about = "about us",
   links = [],
-  dropdownTitle = "Dropdown",
-  dropdownItems = ["one","two","three"]
+  dropdownTitle = "dropdown",
+  dropdownItems = ["one","two","three"],
+  mode,
+  togglemode,
+  onSearch
 }) {
   const [scrolled, setScrolled] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
 
-  const onSearch = (e) => {
-    e.preventDefault(); // prevents page reload
-    if (!searchTerm.trim()) {
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    const trimmed = searchTerm.trim();
+
+    if (!trimmed) {
       alert("Please enter a search term!");
       return;
     }
-    console.log("Searching for:", searchTerm);
-    // You can replace this with an API call or routing logic
-    window.location.href = `/search?q=${encodeURIComponent(searchTerm)}`;
+
+    if (onSearch && typeof onSearch === "function") {
+      onSearch(trimmed);
+    } else {
+      window.location.href = `/search?q=${encodeURIComponent(trimmed)}`;
+    }
   };
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
-    };
+    const handleScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   return (
     <nav
-      className={`navbar navbar-expand-lg navbar-dark bg-primary sticky-top transition-all ${
+      className={`navbar navbar-expand-lg navbar-${mode} bg-primary transition-all ${
         scrolled ? "shadow-sm" : ""
       }`}
     >
@@ -55,14 +61,15 @@ export default function Navbar({
           <span className="navbar-toggler-icon"></span>
         </button>
 
-        {/* Navbar Content */}
+        {/* Navbar Links */}
         <div className="collapse navbar-collapse" id="navbarNav">
-          {/* Links */}
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
             {links.map((link, index) => (
               <li key={index} className="nav-item">
                 <a
-                  className={`nav-link ${link.active ? "active fw-semibold" : ""}`}
+                  className={`nav-link ${
+                    link.active ? "active fw-semibold" : ""
+                  }`}
                   href={link.href}
                 >
                   {link.label}
@@ -81,24 +88,25 @@ export default function Navbar({
                   data-bs-toggle="dropdown"
                   aria-expanded="false"
                 >
-                  {dropdownTitle || "Menu"}
+                  {dropdownTitle}
                 </a>
-                <ul
-                  className="dropdown-menu"
-                  aria-labelledby="navbarDropdown"
-                >
-                  {dropdownItems.map((item, idx) => (
-                    <li key={idx}>
-                      <a className="dropdown-item" href={item.href}>
-                        {item.label}
-                      </a>
-                    </li>
-                  ))}
+                <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
+                  {dropdownItems.map((item, idx) => {
+                    const label = typeof item === "string" ? item : item.label;
+                    const href = typeof item === "string" ? `/${item}` : item.href;
+                    return (
+                      <li key={idx}>
+                        <a className="dropdown-item" href={href}>
+                          {label}
+                        </a>
+                      </li>
+                    );
+                  })}
                 </ul>
               </li>
             )}
 
-            {/* About Link */}
+            {/* About */}
             <li className="nav-item">
               <a className="nav-link" href="/about">
                 {about}
@@ -106,12 +114,8 @@ export default function Navbar({
             </li>
           </ul>
 
-          {/* Search Bar */}
-          <form
-            className="d-flex"
-            role="search"
-            onSubmit={onSearch}
-          >
+          {/* Search */}
+          <form className="d-flex" role="search" onSubmit={handleSearchSubmit}>
             <input
               name="search"
               className="form-control me-1"
@@ -120,11 +124,34 @@ export default function Navbar({
               placeholder="Search..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
+              autoComplete="off"
             />
-            <button className="btn btn-outline-success" type="submit">
+            <button className="btn btn-outline-dark" type="submit">
               Search
             </button>
           </form>
+
+          {/* Dark Mode Toggle */}
+          <div
+            className={`form-check form-switch ms-3 text-${
+              mode === "light" ? "dark" : "light"
+            }`}
+          >
+            <input
+              className="form-check-input"
+              onClick={togglemode}
+              type="checkbox"
+              role="switch"
+              id="darkModeSwitch"
+            />
+            <label
+              className="form-check-label"
+              htmlFor="darkModeSwitch"
+              style={{ cursor: "pointer" }}
+            >
+              Dark
+            </label>
+          </div>
         </div>
       </div>
     </nav>
@@ -138,15 +165,29 @@ Navbar.propTypes = {
     PropTypes.shape({
       label: PropTypes.string.isRequired,
       href: PropTypes.string.isRequired,
-      active: PropTypes.bool,
+      active: PropTypes.bool
     })
   ),
   dropdownTitle: PropTypes.string,
   dropdownItems: PropTypes.arrayOf(
-    PropTypes.shape({
-      label: PropTypes.string.isRequired,
-      href: PropTypes.string.isRequired,
-    })
+    PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.shape({
+        label: PropTypes.string.isRequired,
+        href: PropTypes.string.isRequired
+      })
+    ])
   ),
-  onSearch: PropTypes.func,
+  mode: PropTypes.oneOf(["light", "dark"]),
+  togglemode: PropTypes.func.isRequired,
+  onSearch: PropTypes.func
+};
+
+Navbar.defaultProps = {
+  title: "My App",
+  about: "About Us",
+  links: [],
+  dropdownTitle: "Dropdown",
+  dropdownItems: [],
+  mode: "light"
 };

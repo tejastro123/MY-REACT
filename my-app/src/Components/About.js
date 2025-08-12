@@ -12,7 +12,7 @@ export default function About() {
       id: "collapseOne",
       title: "Accordion Item #1",
       content:
-        "This is the first item's accordion body. It’s shown by default..."
+        "This is the first item's accordion body. Its shown by default..."
     },
     {
       id: "collapseTwo",
