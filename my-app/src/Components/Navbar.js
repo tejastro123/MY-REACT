@@ -40,7 +40,7 @@ export default function Navbar({
         mode === "light" ? "blue" : "dark"
       } ${scrolled ? "shadow-sm" : ""} transition-all`}
     >
-      <div className="container" style={{ backgroundColor: mode === "dark" ? "#343a40" : "#f8f9fa", color: mode ==="dark" ? "#f8f9fa" : "343a40"}}>
+      <div className="container" style={{ backgroundColor: mode === "dark" ? "black" : "white", color: mode ==="dark" ? "white" : "black"}}>
         {/* Brand */}
         <a className="navbar-brand fw-bold" href="/">
           {title}
@@ -109,24 +109,37 @@ export default function Navbar({
               </a>
             </li>
           </ul>
+          </div>
 
-          {/* Search */}
-          <form className="d-flex" role="search" onSubmit={handleSearchSubmit} style={{ backgroundColor: mode === "dark" ? "#343a40" : "white", 
-            color: mode ==="dark" ? "white" : "#343a40"}}>
-            <input
-              name="search"
-              className="form-control"
-              aria-label="Search"
-              type="search"
-              placeholder="Search..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              autoComplete="off"
-            />
-            <button className={`btn btn-${mode === "light" ? "dark" : "light"}`} type="submit">
-              Search
-            </button>
-          </form>
+          {/* Search */} 
+          <form
+          className="d-flex"
+  role="search"
+  onSubmit={handleSearchSubmit}
+  style={{
+    backgroundColor: mode === "dark" ? "black" : "white",
+    color: mode === "dark" ? "white" : "black",
+    maxWidth: "300px"
+  }}
+>
+    <input
+      name="search"
+      className="form-control"
+      aria-label="Search"
+      type="search"
+      placeholder="Search..."
+      value={searchTerm}
+      onChange={(e) => setSearchTerm(e.target.value)}
+      autoComplete="on"
+    />
+    <button
+      className={`btn btn-${mode === "light" ? "dark" : "light"}`}
+      type="submit"
+    > Search
+    </button>
+</form>
+
+          
 
           {/* Dark Mode Toggle */}
           <div className={`form-check form-switch ms-3 text-${mode === "light" ? "dark" : "light"}`}>
@@ -141,12 +154,11 @@ export default function Navbar({
             <label
               className="form-check-label"
               htmlFor="darkModeSwitch"
-              style={{ cursor: "pointer", color: mode ==="dark" ? "#f8f9fa" : "343a40" }}
+              style={{ cursor: "pointer", color: mode ==="dark" ? "#f8f9fa" : "black" }}
             >
               {mode === "light" ? "Dark Mode" : "Light Mode"}
             </label>
           </div>
-        </div>
       </div>
     </nav>
   );

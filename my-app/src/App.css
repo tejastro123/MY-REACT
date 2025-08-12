@@ -182,7 +182,7 @@ textarea {
 ======================== */
 .form-control {
   border-color: #ff4b5c;
-  align-items: center;
+  align-items:flex-start;
   box-shadow: 0 0 0 0.15rem rgba(255, 75, 92, 0.25);
 }
 
@@ -208,3 +208,8 @@ textarea {
   to { opacity: 1; transform: translateY(0); }
 }
 
+.search{
+  position: relative;
+  display: inline-block;
+  height: 60px;
+}
