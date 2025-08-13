@@ -4,6 +4,7 @@ import "./App.css";
 import Navbar from "./Components/Navbar";
 import TextForm from "./Components/TextForm";
 import Alert from "./Components/Alert";
+import About from "./Components/About";
 
 // ✅ Move THEME_COLORS outside so it's stable
 const THEME_COLORS = {
@@ -23,9 +24,11 @@ function App() {
     setMode((prevMode) => (prevMode === "light" ? "dark" : "light"));
     if (mode === "light") {
       showalert("Dark Mode has been enabled", "success");
+      document.title = 'My App - Dark Mode';
     } 
     else {
         showalert("Light Mode has been enabled", "success");
+        document.title = 'My App - Light Mode';
         }
   }, [mode]);
 
@@ -71,6 +74,9 @@ function App() {
 
     <div className="container py-4">
       <TextForm showalert={showalert} heading="Enter Text To Analyze" mode={mode} />
+    </div>
+    <div>
+      <About/>
     </div>
     </>
   );
