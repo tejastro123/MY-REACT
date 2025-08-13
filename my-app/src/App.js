@@ -5,6 +5,12 @@ import Navbar from "./Components/Navbar";
 import TextForm from "./Components/TextForm";
 import Alert from "./Components/Alert";
 import About from "./Components/About";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from "react-router-dom";
 
 // ✅ Move THEME_COLORS outside so it's stable
 const THEME_COLORS = {
@@ -53,6 +59,7 @@ function App() {
 
   return (
     <>
+    <Router>
     <div>
       <Navbar
         title="MY APP"
@@ -63,28 +70,33 @@ function App() {
         toggleMode={toggleMode}
         links={[
           { label: "Home", href: "/" },
-          { label: "About", href: "/about" },
           { label: "Contact", href: "/contact" },
         ]}
       />
     </div>
+
     <div> 
       <Alert alert= {alert}/>
-    </div>
+    </div><br></br>
 
-    <div className="container py-4">
-      <TextForm showalert={showalert} heading="Enter Text To Analyze" mode={mode} />
-    </div>
-    <div>
-      <About/>
-    </div>
+    <Switch>
+          <Route exact path="/about">
+            <About />
+          </Route>
+          <Route exact path="/">
+            <div className="container py-4">
+                <TextForm showalert={showalert} heading="Enter Text To Analyze" mode={mode} />
+            </div>
+          </Route>
+    </Switch>
+    </Router>
     </>
   );
 }
 
 export default App;
 
-// 1.<>
+{/* // 1.<>
     // <div className="App">
     //   <header className="App-header">
     //     <h1>HI! IAM TEJAS</h1>
@@ -92,7 +104,7 @@ export default App;
     //     <p> 
     //       Edit <code>src/App.js</code> and save to reload.
     //     </p> 
-    //     <a
+    //     <a>
     //       className="App-link"
     //       href="https://reactjs.org"
     //       target="_blank"
@@ -119,4 +131,4 @@ export default App;
     //     Voluptates animi voluptatibus ducimus possimus deleniti dolorem quam beatae dolores, suscipit adipisci.
     //   </p>
     // </div>
-    // </> 
+    // </>  */}

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
 
 export default function Navbar({
   title = "My Website",
@@ -43,9 +44,9 @@ export default function Navbar({
     >
       <div className="container" style={{ backgroundColor: mode === "dark" ? "black" : "white", color: mode ==="dark" ? "white" : "black", borderRadius: 10, height: 75}}>
         {/* Brand */}
-        <a className="navbar-brand fw-bold" href="/">
+        <Link className="navbar-brand fw-bold" to="/">
           {title}
-        </a>
+        </Link>
 
         {/* Mobile Menu Toggle */}
         <button
@@ -65,12 +66,12 @@ export default function Navbar({
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
             {links.map((link, index) => (
               <li key={index} className="nav-item">
-                <a
+                <Link
                   className={`nav-link ${link.active ? "active fw-semibold" : ""}`}
-                  href={link.href}
+                  to={link.href}
                 >
                   {link.label}
-                </a>
+                </Link>
               </li>
             ))}
 
@@ -93,9 +94,9 @@ export default function Navbar({
                     const href = typeof item === "string" ? `/${item}` : item.href;
                     return (
                       <li key={idx}>
-                        <a className="dropdown-item" href={href}>
+                        <Link className="dropdown-item" to={href}>
                           {label}
-                        </a>
+                        </Link>
                       </li>
                     );
                   })}
@@ -105,9 +106,9 @@ export default function Navbar({
 
             {/* About */}
             <li className="nav-item">
-              <a className="nav-link" href="/about">
+              <Link className="nav-link" to="/about">
                 {about}
-              </a>
+              </Link>
             </li>
           </ul>
           </div>
