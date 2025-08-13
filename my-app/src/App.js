@@ -3,6 +3,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import "./App.css";
 import Navbar from "./Components/Navbar";
 import TextForm from "./Components/TextForm";
+import Alert from "./Components/Alert";
 
 // ✅ Move THEME_COLORS outside so it's stable
 const THEME_COLORS = {
@@ -20,7 +21,13 @@ function App() {
   // Toggle theme
   const toggleMode = useCallback(() => {
     setMode((prevMode) => (prevMode === "light" ? "dark" : "light"));
-  }, []);
+    if (mode === "light") {
+      showalert("Dark Mode has been enabled", "success");
+    } 
+    else {
+        showalert("Light Mode has been enabled", "success");
+        }
+  }, [mode]);
 
   // Apply theme changes & persist
   useEffect(() => {
@@ -29,8 +36,21 @@ function App() {
     localStorage.setItem("theme", mode);
   }, [mode]);
 
+  const [alert, setalert] = useState(null);
+
+  const showalert = (message, type) => {
+    setalert({
+      msg: message,
+      type: type
+    })
+    setTimeout(() => {
+      setalert(null);
+    }, 3000)
+  }
+
   return (
     <>
+    <div>
       <Navbar
         title="MY APP"
         isLoggedIn={isLoggedIn}
@@ -44,10 +64,14 @@ function App() {
           { label: "Contact", href: "/contact" },
         ]}
       />
+    </div>
+    <div> 
+      <Alert alert= {alert}/>
+    </div>
 
-      <main className="container py-4">
-        <TextForm heading="Enter Text To Analyze" mode={mode} />
-      </main>
+    <div className="container py-4">
+      <TextForm showalert={showalert} heading="Enter Text To Analyze" mode={mode} />
+    </div>
     </>
   );
 }

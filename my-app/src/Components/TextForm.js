@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-export default function TextForm({ heading, mode }) {
+export default function TextForm({showalert, heading, mode}) {
   const [text, setText] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [email, setEmail] = useState("");
@@ -30,6 +30,7 @@ export default function TextForm({ heading, mode }) {
     ) {
       setIsLoggedIn(true);
       localStorage.setItem("isLoggedIn", "true");
+      showalert("LoggedIn successfully", "success");
       setError("");
     } else {
       setError("❌ Invalid email or password");
@@ -44,12 +45,20 @@ export default function TextForm({ heading, mode }) {
     setPassword("");
     setError("");
     localStorage.removeItem("isLoggedIn");
+    showalert("LoggedOut successfully", "success");
   };
 
   // Text actions
-  const handleUppercase = () => setText(text.toUpperCase());
-  const handleLowercase = () => setText(text.toLowerCase());
-  const handleCapitalize = () =>
+  const handleUppercase = () => {
+    setText(text.toUpperCase());
+    showalert("Converted to uppercase", "success");
+  }
+  const handleLowercase = () => {
+    setText(text.toLowerCase());
+    showalert("Converted to lowercase", "success");
+  }
+  const handleCapitalize = () => {
+    showalert("Capitalized", "success");
     setText(
       text
         .split(/\s+/)
@@ -58,16 +67,29 @@ export default function TextForm({ heading, mode }) {
         )
         .join(" ")
     );
-  const handleClear = () => setText("");
-  const handleRemoveSpaces = () => setText(text.replace(/\s+/g, " ").trim());
-  const handleReverse = () => setText(text.split("").reverse().join(""));
+  }
+  const handleClear = () => {
+    setText("");
+    showalert("Text cleard!", "success");
+  }
+  const handleRemoveSpaces = () => {
+    setText(text.replace(/\s+/g, " ").trim());
+    showalert("Removed all extra spaces from text!", "success");
+  }
+  const handleReverse = () => {
+    setText(text.split("").reverse().join(""));
+    showalert("Reversed the text!", "success");
+  }
 
-  const handleChange = (e) => setText(e.target.value);
+  const handleChange = (e) => {
+    setText(e.target.value);
+  }
 
   const handleCopy = () => {
     navigator.clipboard.writeText(text);
     setCopyStatus("✅ Copied!");
     setTimeout(() => setCopyStatus(""), 1500);
+    showalert("Text copied!", "success");
   };
 
   // Keyboard shortcuts
@@ -129,7 +151,7 @@ export default function TextForm({ heading, mode }) {
                 />
               </div>
 
-              <div className="mb-3">
+              <div className="mb-3" style={{ display: "flex", flexDirection: "column" }}>
                 <label htmlFor="password" className="form-label fw-semibold">
                   Password
                 </label>
@@ -147,8 +169,7 @@ export default function TextForm({ heading, mode }) {
                     type="button"
                     className="btn btn-outline-secondary"
                     style={{
-                      backgroundColor:
-                        mode === "dark" ? "#333" : "#f8f9fa",
+                      backgroundColor: mode === "dark" ? "#333" : "#f8f9fa",
                       color: mode === "dark" ? "#fff" : "#000",
                     }}
                     onClick={() => setShowPassword(!showPassword)}
