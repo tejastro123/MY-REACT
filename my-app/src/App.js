@@ -39,7 +39,7 @@ function App() {
         }
   }, [mode]);
 
-  // Apply theme changes & persisttejas
+  // Apply theme changes & persist
   useEffect(() => {
     document.body.style.backgroundColor = THEME_COLORS[mode];
     document.body.style.color = mode === "dark" ? "#ffffff" : "#000000"; // text color
