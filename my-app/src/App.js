@@ -21,7 +21,7 @@ const THEME_COLORS = {
 function App() {
   // Theme state with persistence
   const [mode, setMode] = useState(() => localStorage.getItem("theme") || "light");
-  document.title = "TEXT APP";
+  document.title = "TEXT MANIPULATOR APP";
 
   // Login state
   const [isLoggedIn, setIsLoggedIn] = useState(false);
