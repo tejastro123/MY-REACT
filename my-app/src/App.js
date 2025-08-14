@@ -70,7 +70,7 @@ function App() {
         mode={mode}
         toggleMode={toggleMode}
         links={[
-          { label: "Home", href: "/" },
+          { label: "Home", href: "/home" },
           { label: "Contact", href: "/contact" },
         ]}
       />
