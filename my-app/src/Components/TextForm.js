@@ -87,6 +87,7 @@ export default function TextForm({showalert, heading, mode}) {
 
   const handleCopy = () => {
     navigator.clipboard.writeText(text);
+    document.getSelection().removeAllRanges();
     setCopyStatus("✅ Copied!");
     setTimeout(() => setCopyStatus(""), 1500);
     showalert("Text copied!", "success");
@@ -238,7 +239,7 @@ export default function TextForm({showalert, heading, mode}) {
             <h4>📊 Summary</h4>
             <p>
               <b>{wordCount}</b> {wordCount === 1 ? "word" : "words"} |{" "}
-              <b>{text.length}</b> characters
+              <b>{text.split(" ").filter((e)=>{return e.length !== 0}).length}</b> characters
             </p>
             <p>
               ⏱ Estimated Read Time:{" "}
@@ -252,13 +253,13 @@ export default function TextForm({showalert, heading, mode}) {
             <div
               className="p-3 border rounded"
               style={{
-                backgroundColor: mode === "dark" ? "#1e1e1e" : "#f8f9fa",
-                color: mode === "dark" ? "#fff" : "#000",
+                backgroundColor: mode === "dark" ? "black" : "white",
+                color: mode === "dark" ? "white" : "black",
               }}
             >
               {text || (
-                <span className="text-muted">
-                  Enter something in the textbox to preview it here.
+                <span className="text" style={{ fontSize: "1.2rem", color: mode === "dark" ? "white" : "black", }}>
+                  Nothing to preview !
                 </span>
               )}
             </div>

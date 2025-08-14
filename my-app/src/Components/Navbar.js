@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 export default function Navbar({
   title = "My Website",
   about = "About Us",
-  links = [],
+  links = [], 
   dropdownTitle = "Dropdown",
   dropdownItems = ["one", "two", "three"],
   mode,

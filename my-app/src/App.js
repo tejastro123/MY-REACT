@@ -21,6 +21,7 @@ const THEME_COLORS = {
 function App() {
   // Theme state with persistence
   const [mode, setMode] = useState(() => localStorage.getItem("theme") || "light");
+  document.title = "TEXT APP";
 
   // Login state
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -30,15 +31,15 @@ function App() {
     setMode((prevMode) => (prevMode === "light" ? "dark" : "light"));
     if (mode === "light") {
       showalert("Dark Mode has been enabled", "success");
-      document.title = 'My App - Dark Mode';
+      // document.title = 'TEXT App - Dark Mode';
     } 
     else {
         showalert("Light Mode has been enabled", "success");
-        document.title = 'My App - Light Mode';
+        // document.title = 'TEXT App - Light Mode';
         }
   }, [mode]);
 
-  // Apply theme changes & persist
+  // Apply theme changes & persisttejas
   useEffect(() => {
     document.body.style.backgroundColor = THEME_COLORS[mode];
     document.body.style.color = mode === "dark" ? "#ffffff" : "#000000"; // text color
@@ -62,7 +63,7 @@ function App() {
     <Router>
     <div>
       <Navbar
-        title="MY APP"
+        title="TEXT APP"
         isLoggedIn={isLoggedIn}
         onLogin={() => setIsLoggedIn(true)}
         onLogout={() => setIsLoggedIn(false)}
@@ -74,18 +75,16 @@ function App() {
         ]}
       />
     </div>
-
     <div> 
       <Alert alert= {alert}/>
-    </div><br></br>
-
+    </div>
     <Switch>
-          <Route exact path="/about">
-            <About />
+          <Route exact path="/about"><br></br>
+            <About mode={mode}/>
           </Route>
           <Route exact path="/">
             <div className="container py-4">
-                <TextForm showalert={showalert} heading="Enter Text To Analyze" mode={mode} />
+                <TextForm showalert={showalert} heading="Try Text Manipulator!" mode={mode} />
             </div>
           </Route>
     </Switch>
