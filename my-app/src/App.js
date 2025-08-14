@@ -73,7 +73,7 @@ function App() {
           { label: "Home", href: "/home" },
           { label: "Contact", href: "/contact" },
         ]}
-      />
+      /> 
     </div>
     <div> 
       <Alert alert= {alert}/>
