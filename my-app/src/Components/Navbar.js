@@ -10,7 +10,8 @@ export default function Navbar({
   dropdownItems = ["one", "two", "three"],
   mode,
   toggleMode, // ✅ fixed prop name
-  onSearch
+  onSearch,
+  changeMode
 }) {
   const [scrolled, setScrolled] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
@@ -144,6 +145,14 @@ export default function Navbar({
             > Search
           </button>
        </form>
+        <div className="d-flex">
+          <div className="bg-primary rounded mx-2 " onClick={()=> changeMode('primary')} style={{height: '30px',width: '30px', cursor:'pointer'}}></div>
+          <div className="bg-danger rounded mx-2 " onClick={()=> changeMode('danger')} style={{height: '30px',width: '30px', cursor:'pointer'}}></div>
+          <div className="bg-success rounded mx-2 " onClick={()=> changeMode('success')} style={{height: '30px',width: '30px', cursor:'pointer'}}></div>
+          <div className="bg-warning rounded mx-2 " onClick={()=> changeMode('warning')} style={{height: '30px',width: '30px', cursor:'pointer'}}></div>
+          <div className="bg-light rounded mx-2 " onClick={()=> changeMode('light')} style={{height: '30px',width: '30px', cursor:'pointer'}}></div>
+          <div className="bg-dark rounded mx-2 " onClick={()=> changeMode('dark')} style={{height: '30px',width: '30px', cursor:'pointer'}}></div>
+        </div>
           {/* Dark Mode Toggle */}
           <div className={`form-check form-switch ms-3 text-${mode === "light" ? "dark" : "light"}`}>
             <input

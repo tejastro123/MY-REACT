@@ -21,7 +21,6 @@ const THEME_COLORS = {
 function App() {
   // Theme state with persistence
   const [mode, setMode] = useState(() => localStorage.getItem("theme") || "light");
-  document.title = "TEXT MANIPULATOR APP";
 
   // Login state
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -38,6 +37,20 @@ function App() {
         // document.title = 'TEXT App - Light Mode';
         }
   }, [mode]);
+
+  const removeBodyClasses = ()=>{
+    document.body.classList.remove('bg-light');
+    document.body.classList.remove('bg-dark');
+    document.body.classList.remove('bg-warning');
+    document.body.classList.remove('bg-danger');
+    document.body.classList.remove('bg-success');
+  }
+
+  const changeMode = (cls) =>{
+    removeBodyClasses();
+    console.log(cls)
+    document.body.classList.add('bg-'+cls)
+  }
 
   // Apply theme changes & persist
   useEffect(() => {
@@ -63,12 +76,13 @@ function App() {
     <Router>
     <div>
       <Navbar
-        title="TEXT APP"
+        title = "TEXT MANIPULATOR APP"
         isLoggedIn={isLoggedIn}
         onLogin={() => setIsLoggedIn(true)}
         onLogout={() => setIsLoggedIn(false)}
         mode={mode}
         toggleMode={toggleMode}
+        changeMode={changeMode}
         links={[
           { label: "Home", href: "/home" },
           { label: "Contact", href: "/contact" },
